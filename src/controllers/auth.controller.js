@@ -36,3 +36,13 @@ export async function register(req, res) {
     }
   }
 }
+
+export async function logout(req, res) {
+  // Elimina la cookie de sesión del cliente
+  try {
+    res.clearCookie("jwt", { httpOnly: true });
+    handleSuccess(res, 200, "Sesión cerrada exitosamente.");
+  } catch (error) {
+    handleErrorServer(res, 500, "Error al cerrar sesión", error);
+  }
+}
