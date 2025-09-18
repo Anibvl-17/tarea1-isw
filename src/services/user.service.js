@@ -18,3 +18,31 @@ export async function createUser(data) {
 export async function findUserByEmail(email) {
   return await userRepository.findOneBy({ email });
 }
+
+export async function updateUser(id, data) {
+  const userData = await userRepository.findOneBy({ id });
+
+  if (!userData) {
+    return null;
+  }
+
+  if (data.email) {
+    userData.email = data.email;
+  }
+
+  if (data.password) {
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    userData.password = hashedPassword;
+  }
+
+  return await userRepository.save(userData);
+}
+
+export async function deleteUser(id) {
+  const user = await userRepository.findOneBy({ id });
+
+  if (!user) return false;
+
+  await userRepository.remove(user);
+  return true;
+}
