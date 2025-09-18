@@ -1,84 +1,60 @@
+import { updateUser, deleteUser } from "../services/user.service.js";
 import {
-  findNotas,
-  findNotaById,
-  createNota,
-  updateNota,
-  deleteNota,
-} from "../services/notas.services.js";
-import { handleSuccess, handleErrorClient, handleErrorServer } from "../Handlers/responseHandlers.js";
+  handleSuccess,
+  handleErrorClient,
+} from "../Handlers/responseHandlers.js";
+import jwt from "jsonwebtoken";
 
-export class NotasController {
-  async getAllNotas(req, res) {
-    try {
-      const notas = await findNotas();
-      handleSuccess(res, 200, "Notas obtenidas exitosamente", notas);
-    } catch (error) {
-      handleErrorServer(res, 500, "Error al obtener las notas", error.message);
+export async function updateUserById(req, res) {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    const payload = jwt.decode(token, process.env.JWT_SECRET);
+    const userId = payload.sub;
+
+    const data = req.body;
+
+    if (!userId) {
+      return handleErrorClient(res, 400, "ID de usuario inválido");
     }
+
+    // Mas adelante se debe validar que no se ingresen datos adicionales.
+    if (!data.email && !data.password) {
+      return handleErrorClient(res, 400, "Email o contraseña son requeridos");
+    }
+
+    const updatedUser = await updateUser(userId, data);
+
+    if (updatedUser) {
+      handleSuccess(res, 200, "Usuario actualizado exitosamente", updatedUser);
+    }
+  } catch (error) {
+    handleErrorClient(res, 404, error.message);
   }
+}
 
-  async getNotaById(req, res) {
-    try {
-      const { id } = req.params;
-      
-      if (!id || isNaN(id)) {
-        return handleErrorClient(res, 400, "ID de nota inválido");
-      }
-      
-      const nota = await findNotaById(id);
-      handleSuccess(res, 200, "Nota obtenida exitosamente", nota);
-    } catch (error) {
-      handleErrorClient(res, 404, error.message);
-    }
-  }
+export async function deleteUserById(req, res) {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    const payload = jwt.decode(token, process.env.JWT_SECRET);
+    const userId = payload.sub;
 
-  async createNota(req, res) {
-    try {
-      const data = req.body;
-      
-      if (!data || Object.keys(data).length === 0) {
-        return handleErrorClient(res, 400, "Datos de la nota son requeridos");
-      }
-      
-      const nuevaNota = await createNota(data);
-      handleSuccess(res, 201, "Nota creada exitosamente", nuevaNota);
-    } catch (error) {
-      handleErrorServer(res, 500, "Error al crear la nota", error.message);
+    if (!userId) {
+      return handleErrorClient(res, 400, "ID de usuario inválido");
     }
-  }
+    
+    const response = await deleteUser(userId);
+    if (response) {
+      // Elimina la cookie del token JWT
+      res.clearCookie("jwt", { httpOnly: true });
+      handleSuccess(res, 200, "Usuario eliminado exitosamente", { userId });
+    }
+    else {
+      handleErrorClient(res, 404, "Usuario no encontrado");
+    }
 
-  async updateNota(req, res) {
-    try {
-      const { id } = req.params;
-      const changes = req.body;
-      
-      if (!id || isNaN(id)) {
-        return handleErrorClient(res, 400, "ID de nota inválido");
-      }
-      
-      if (!changes || Object.keys(changes).length === 0) {
-        return handleErrorClient(res, 400, "Datos para actualizar son requeridos");
-      }
-      
-      const notaActualizada = await updateNota(id, changes);
-      handleSuccess(res, 200, "Nota actualizada exitosamente", notaActualizada);
-    } catch (error) {
-      handleErrorClient(res, 404, error.message);
-    }
-  }
-
-  async deleteNota(req, res) {
-    try {
-      const { id } = req.params;
-      
-      if (!id || isNaN(id)) {
-        return handleErrorClient(res, 400, "ID de nota inválido");
-      }
-      
-      await deleteNota(id);
-      handleSuccess(res, 200, "Nota eliminada exitosamente", { id });
-    } catch (error) {
-      handleErrorClient(res, 404, error.message);
-    }
+  } catch (error) {
+    handleErrorClient(res, 404, error.message);
   }
 }
