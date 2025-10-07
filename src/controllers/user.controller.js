@@ -4,6 +4,7 @@ import {
   handleErrorClient,
 } from "../Handlers/responseHandlers.js";
 import jwt from "jsonwebtoken";
+import { userUpdateBodyValidation } from "../validations/user.validation.js";
 
 export async function updateUserById(req, res) {
   try {
@@ -12,18 +13,19 @@ export async function updateUserById(req, res) {
     const payload = jwt.decode(token, process.env.JWT_SECRET);
     const userId = payload.sub;
 
-    const data = req.body;
-
     if (!userId) {
       return handleErrorClient(res, 400, "ID de usuario inválido");
     }
 
-    // Mas adelante se debe validar que no se ingresen datos adicionales.
-    if (!data.email && !data.password) {
-      return handleErrorClient(res, 400, "Email o contraseña son requeridos");
+    const { body } = req;
+
+    const { error } = userUpdateBodyValidation.validate(body);
+    
+    if (error) {
+      return handleErrorClient(res, 400, "Parámetros invalidos", error.message);
     }
 
-    const updatedUser = await updateUser(userId, data);
+    const updatedUser = await updateUser(userId, body);
 
     if (updatedUser) {
       handleSuccess(res, 200, "Usuario actualizado exitosamente", updatedUser);

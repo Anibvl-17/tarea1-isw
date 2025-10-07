@@ -1,16 +1,19 @@
 import { loginUser } from "../services/auth.service.js";
 import { createUser } from "../services/user.service.js";
 import { handleSuccess, handleErrorClient, handleErrorServer } from "../Handlers/responseHandlers.js";
+import { userAuthBodyValidation } from "../validations/user.validation.js";
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { body } = req;
     
-    if (!email || !password) {
-      return handleErrorClient(res, 400, "Email y contraseña son requeridos");
+    const { error } = userAuthBodyValidation.validate(body);
+
+    if (error) {
+      return handleErrorClient(res, 400, "Parámetros invalidos", error.message);
     }
     
-    const data = await loginUser(email, password);
+    const data = await loginUser(body.email, body.password);
     handleSuccess(res, 200, "Login exitoso", data);
   } catch (error) {
     handleErrorClient(res, 401, error.message);
@@ -19,13 +22,15 @@ export async function login(req, res) {
 
 export async function register(req, res) {
   try {
-    const data = req.body;
+    const { body } = req;
     
-    if (!data.email || !data.password) {
-      return handleErrorClient(res, 400, "Email y contraseña son requeridos");
+    const { error } = userAuthBodyValidation.validate(body);
+
+    if (error) {
+      return handleErrorClient(res, 400, "Parámetros invalidos", error.message);
     }
     
-    const newUser = await createUser(data);
+    const newUser = await createUser(body);
     delete newUser.password; // Nunca devolver la contraseña
     handleSuccess(res, 201, "Usuario registrado exitosamente", newUser);
   } catch (error) {
