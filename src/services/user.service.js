@@ -35,7 +35,10 @@ export async function updateUser(id, data) {
     userData.password = hashedPassword;
   }
 
-  return await userRepository.save(userData);
+  const updatedUser = await userRepository.save(userData);
+  delete updatedUser.password;
+
+  return updatedUser;
 }
 
 export async function deleteUser(id) {
