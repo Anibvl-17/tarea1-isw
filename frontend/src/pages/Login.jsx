@@ -18,7 +18,6 @@ const Login = () => {
       if (result?.status === "Success" && result?.data) {
         // Actualizar contexto con el usuario
         setUser(result.data.user);
-        showSuccessAlert("Login correcto", "Serás redirigido a Home");
         navigate("/home");
       } else {
         const message = result?.message || "Error al iniciar sesión";
