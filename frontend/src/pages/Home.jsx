@@ -49,8 +49,30 @@ const Home = () => {
         </button>
 
         {profileData && (
+          //<div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
+          //  <pre className="text-sm text-gray-700 overflow-auto">{JSON.stringify(profileData, null, 2)}</pre>
+          //</div>
+
           <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
-            <pre className="text-sm text-gray-700 overflow-auto">{JSON.stringify(profileData, null, 2)}</pre>
+            <p className='mb-6 text-lg font-semibold text-gray-700'>¡Hola! Este es tu perfil privado, solo tú puedes verlo.</p>
+            <div className="overflow-hidden rounded-lg">
+              <table className="w-full bg-white">
+                <thead className='bg-gray-300 text-gray-800'>
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Contraseña</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-800">
+                  <tr className="bg-gray-200">
+                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">{profileData.userData.email}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                      {profileData.userData.password}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
