@@ -1,11 +1,32 @@
 import { useState } from 'react';
+import { getProfile } from '../services/profile.service.js';
+import { showErrorAlert } from '../helpers/sweetAlert.js';
 
 const Home = () => {
   const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleGetProfile = async () => {
-    console.log('Obtener perfil');
+    try {
+      const result = await getProfile();
+      setLoading(true);
+
+      if (result.success) {
+        setProfileData(result.data);
+      } else {
+        showErrorAlert("Error al obtener perfil", "");
+        console.error("Error al obtener perfil:", error);
+        setProfileData([]);
+      }
+    } catch (error) {
+      showErrorAlert("Error al obtener perfil", "");
+      console.error("Error al obtener perfil:", error);
+      setProfileData([]);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-2xl transform transition-all hover:scale-105">
@@ -17,7 +38,14 @@ const Home = () => {
           onClick={handleGetProfile} 
           className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-300"
         >
-          Obtener Perfil
+          {loading ? (
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="spinner" style={{ width: '20px', height: '20px', marginRight: '10px' }}></div>
+              Cargando pilotos...
+            </span>
+          ) : (
+            "Obtener Perfil"
+          )}
         </button>
 
         {profileData && (
