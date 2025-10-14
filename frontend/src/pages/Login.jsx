@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as loginService } from "@services/auth.service";
 import { useAuth } from "@context/AuthContext";
-import { showErrorAlert, showSuccessAlert } from "@helpers/sweetAlert";
+import { showErrorAlert } from "@helpers/sweetAlert";
 
 const Login = () => {
   const navigate = useNavigate();
