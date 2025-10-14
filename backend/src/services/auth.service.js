@@ -14,7 +14,10 @@ export async function loginUser(email, password) {
     throw new Error("Credenciales incorrectas");
   }
 
-  const payload = { sub: user.id, email: user.email };
+  // --- IMPORTANTE! ---
+  // Para la tarea 5 se solicita mostrar la contraseña en frontend
+  // Pero NO es buena práctica!
+  const payload = { sub: user.id, email: user.email, password: password };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   delete user.password;
