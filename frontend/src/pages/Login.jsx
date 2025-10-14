@@ -1,16 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login as loginService } from "@services/auth.service";
+import { useAuth } from "@context/AuthContext";
+import { showErrorAlert, showSuccessAlert } from "@helpers/sweetAlert";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+    try {
+      const result = await loginService({ email, password });
+
+      if (result?.status === "Success" && result?.data) {
+        // Actualizar contexto con el usuario
+        setUser(result.data.user);
+        showSuccessAlert("Login correcto", "Serás redirigido a Home");
+        navigate("/home");
+      } else {
+        const message = result?.message || "Error al iniciar sesión";
+        showErrorAlert("Error", message);
+      }
+    } catch (error) {
+      showErrorAlert("Error", error.message || "Error en la conexión");
+    }
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md transform transition-all hover:scale-105">
