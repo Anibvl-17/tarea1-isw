@@ -1,12 +1,20 @@
 import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 import { AppDataSource, connectDB } from "./config/configDb.js";
 import { routerApi } from "./routes/index.routes.js";
 
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+
+// Para permitir peticiones del frontend
+app.use(cors({
+  credentials: true,
+  origin: true
+}));
+
 // Ruta principal de bienvenida
 app.get("/", (req, res) => {
   res.send("¡Bienvenido a mi API REST con TypeORM!");
