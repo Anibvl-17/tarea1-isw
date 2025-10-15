@@ -5,6 +5,7 @@ import Home from "@pages/Home";
 import Logout from "@pages/Logout";
 import Error404 from "@pages/Error404";
 import Root from "@pages/Root";
+import Register from "@pages/Register";
 import ProtectedRoute from "@components/ProtectedRoute";
 import "@styles/styles.css";
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         element: <Logout />,
+      },
+      {
+        path: "/register",
+        element: <Register />
       },
       {
         path: "/home",
