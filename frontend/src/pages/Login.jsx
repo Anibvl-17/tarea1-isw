@@ -78,6 +78,13 @@ const Login = () => {
           >
             Iniciar sesión
           </button>
+          <button
+            type="button"
+            className="w-full bg-transparent border-2 border-transparent text-purple-600 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-110 hover:underline focus:scale-100"
+            onClick={handleCreateAccount}
+          >
+            Crea una cuenta
+          </button>
         </form>
       </div>
     </div>
