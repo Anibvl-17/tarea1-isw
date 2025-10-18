@@ -13,7 +13,6 @@ const Logout = () => {
       try {
         await logoutService();
         setUser(null);
-        showSuccessAlert("Sesión cerrada", "Vuelve a iniciar sesión para ingresar al sitio.");
       } catch (error) {
         showErrorAlert("Error", error?.message || "No se pudo cerrar sesión");
       } finally {
