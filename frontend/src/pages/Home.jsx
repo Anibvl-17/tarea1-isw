@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { getProfile } from "../services/profile.service.js";
-import { showErrorAlert } from "../helpers/sweetAlert.js";
+import { useNavigate } from "react-router-dom"
+import { getProfile, updateProfile } from "../services/profile.service.js";
+import { showConfirmAlert, showErrorAlert, showSuccessAlert } from "../helpers/sweetAlert.js";
 
 const Home = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const setFormData = (data) => {
     const form = document.forms.edit;
     form.email.value = data.email;
     form.password.value = data.password;
-  }
+  };
 
   const handleGetProfile = async () => {
     try {
@@ -41,22 +44,53 @@ const Home = () => {
 
     try {
       const result = await getProfile();
-  
+
       if (result.success) {
-        setFormData(result.data.userData)
+        setFormData(result.data.userData);
       }
     } catch (error) {
-      alert("error");
+      showErrorAlert("Error", "Ocurrió un error al actualizar perfil.")
+      console.error("Error al actualizar perfil:", error);
+      
     }
   };
 
   const handleCancelEditProfile = async () => {
     setFormData({
       email: "",
-      password: ""
-    })
+      password: "",
+    });
     setEditProfile(false);
+  };
+
+  const handleConfirmEditProfile = async (e) => {
+    e.preventDefault();
+    showConfirmAlert("¿Estás seguro?", "Al editar el perfil, debes iniciar sesión nuevamente.", "Editar perfil y cerrar sesión", handleUpdateProfile);
   }
+
+  const handleUpdateProfile = async () => {    
+    try {
+      const formData = {
+        email: document.forms.edit.email.value,
+        password: document.forms.edit.email.password,
+      };
+
+      const result = await updateProfile(formData);
+
+      if (result.success) {
+        showSuccessAlert(
+          "Perfil actualizado",
+          "¡Tu perfil se actualizó exitosamente!"
+        );
+        navigate("/logout")
+      }
+    } catch (error) {
+      showErrorAlert("Error", "Ocurrió un error al actualizar perfil");
+      console.error("Error al actualizar perfil:", error);
+    } finally {
+      setEditProfile(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
@@ -173,6 +207,7 @@ const Home = () => {
                 <input
                   type="submit"
                   value="Guardar cambios"
+                  onClick={handleConfirmEditProfile}
                   className="px-4 py-2 text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition-all duration-300 transform hover:shadow-md hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
                 />
                 <input
