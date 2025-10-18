@@ -34,28 +34,42 @@ const Home = () => {
           Página de Inicio
         </h1>
 
-        <button
-          onClick={handleGetProfile}
-          className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-300"
-        >
-          {loading ? (
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                className="spinner"
-                style={{ width: "20px", height: "20px", marginRight: "10px" }}
-              ></div>
-              Cargando pilotos...
-            </span>
-          ) : (
-            "Obtener Perfil"
-          )}
-        </button>
+        <div className="flex flex-row gap-4">
+          <button
+            onClick={handleGetProfile}
+            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-300"
+          >
+            {loading ? (
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  className="spinner"
+                  style={{ width: "20px", height: "20px", marginRight: "10px" }}
+                ></div>
+                Cargando pilotos...
+              </span>
+            ) : (
+              "Obtener Perfil"
+            )}
+          </button>
+          <button
+            onClick={""}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
+          >
+            Editar perfil
+          </button>
+          <button
+            onClick={""}
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-300"
+          >
+            Eliminar perfil
+          </button>
+        </div>
 
         {profileData && (
           //<div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
