@@ -21,6 +21,23 @@ export function showSuccessAlert(title, text) {
   });
 }
 
+export function showConfirmAlert(title, text, confirmButtonText, onConfirm) {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: confirmButtonText,
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      onConfirm();
+    }
+  })
+}
+
 export function deleteDataAlert(onConfirm) {
   Swal.fire({
     title: '¿Estás seguro?',
