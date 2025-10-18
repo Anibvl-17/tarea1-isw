@@ -3,8 +3,15 @@ import { getProfile } from "../services/profile.service.js";
 import { showErrorAlert } from "../helpers/sweetAlert.js";
 
 const Home = () => {
+  const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const setFormData = (data) => {
+    const form = document.forms.edit;
+    form.email.value = data.email;
+    form.password.value = data.password;
+  }
 
   const handleGetProfile = async () => {
     try {
@@ -24,8 +31,32 @@ const Home = () => {
       setProfileData([]);
     } finally {
       setLoading(false);
+      setEditProfile(false);
     }
   };
+
+  const handleEditProfile = async () => {
+    setProfileData(null);
+    setEditProfile(true);
+
+    try {
+      const result = await getProfile();
+  
+      if (result.success) {
+        setFormData(result.data.userData)
+      }
+    } catch (error) {
+      alert("error");
+    }
+  };
+
+  const handleCancelEditProfile = async () => {
+    setFormData({
+      email: "",
+      password: ""
+    })
+    setEditProfile(false);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
@@ -58,14 +89,14 @@ const Home = () => {
             )}
           </button>
           <button
-            onClick={""}
-            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
+            onClick={handleEditProfile}
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             Editar perfil
           </button>
           <button
             onClick={""}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-300"
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300"
           >
             Eliminar perfil
           </button>
@@ -100,6 +131,58 @@ const Home = () => {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {editProfile && (
+          <div className="rounded-xl p-6 bg-gray-50 border border-gray-200 flex flex-col gap-4">
+            <p className="text-lg font-semibold text-gray-700">
+              Ingresa los nuevos datos.
+            </p>
+            <form className="flex flex-col gap-4" name="edit">
+              <div className="w-full flex flex-row gap-4 flex-wrap">
+                <div className="flex flex-col flex-1 gap-1">
+                  <label
+                    htmlFor="email"
+                    className="text-sm text-gray-600 uppercase tracking-wider"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="text"
+                    id="email"
+                    className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
+                  />
+                </div>
+                <div className="flex flex-col flex-1 gap-1">
+                  <label
+                    htmlFor="password"
+                    className="text-sm  text-gray-600 uppercase tracking-wider"
+                  >
+                    Contraseña
+                  </label>
+                  <input
+                    type="text"
+                    id="password"
+                    className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-4 self-end">
+                <input
+                  type="submit"
+                  value="Guardar cambios"
+                  className="px-4 py-2 text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition-all duration-300 transform hover:shadow-md hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
+                />
+                <input
+                  type="button"
+                  value="Cancelar"
+                  onClick={handleCancelEditProfile}
+                  className="px-4 py-2 text-sm border bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-lg transition-all duration-300 transform hover:shadow-md hover:scale-105"
+                />
+              </div>
+            </form>
           </div>
         )}
       </div>
