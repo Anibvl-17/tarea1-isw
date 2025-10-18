@@ -72,10 +72,6 @@ const Home = () => {
         </div>
 
         {profileData && (
-          //<div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
-          //  <pre className="text-sm text-gray-700 overflow-auto">{JSON.stringify(profileData, null, 2)}</pre>
-          //</div>
-
           <div className="mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200">
             <p className="mb-6 text-lg font-semibold text-gray-700">
               ¡Hola! Este es tu perfil privado, solo tú puedes verlo.
