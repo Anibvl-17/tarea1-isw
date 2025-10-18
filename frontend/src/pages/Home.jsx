@@ -4,17 +4,20 @@ import { deleteProfile, getProfile, updateProfile } from "../services/profile.se
 import { deleteDataAlert, showConfirmAlert, showErrorAlert, showSuccessAlert } from "../helpers/sweetAlert.js";
 
 const Home = () => {
+  const [formData, setFormData] = useState({email: "", password: ""})
   const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const setFormData = (data) => {
-    const form = document.forms.edit;
-    form.email.value = data.email;
-    form.password.value = data.password;
-  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
 
   const handleGetProfile = async () => {
     try {
@@ -46,12 +49,16 @@ const Home = () => {
       const result = await getProfile();
 
       if (result.success) {
-        setFormData(result.data.userData);
+        const userData = {
+          email: result.data.userData.email,
+          password: result.data.userData.password
+        }
+        
+        setFormData(userData);
       }
     } catch (error) {
       showErrorAlert("Error", "Ocurrió un error al actualizar perfil.")
       console.error("Error al actualizar perfil:", error);
-      
     }
   };
 
@@ -70,11 +77,6 @@ const Home = () => {
 
   const handleUpdateProfile = async () => {    
     try {
-      const formData = {
-        email: document.forms.edit.email.value,
-        password: document.forms.edit.email.password,
-      };
-
       const result = await updateProfile(formData);
 
       if (result.success) {
@@ -204,6 +206,9 @@ const Home = () => {
                   <input
                     type="text"
                     id="email"
+                    placeholder="ejemplo@gmail.com"
+                    onChange={handleInputChange}
+                    defaultValue={formData.email}
                     className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
                   />
                 </div>
@@ -217,6 +222,8 @@ const Home = () => {
                   <input
                     type="text"
                     id="password"
+                    onChange={handleInputChange}
+                    defaultValue={formData.password}
                     className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
                   />
                 </div>
