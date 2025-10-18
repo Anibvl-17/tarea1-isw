@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { getProfile, updateProfile } from "../services/profile.service.js";
-import { showConfirmAlert, showErrorAlert, showSuccessAlert } from "../helpers/sweetAlert.js";
+import { deleteProfile, getProfile, updateProfile } from "../services/profile.service.js";
+import { deleteDataAlert, showConfirmAlert, showErrorAlert, showSuccessAlert } from "../helpers/sweetAlert.js";
 
 const Home = () => {
   const [editProfile, setEditProfile] = useState(false);
@@ -92,6 +92,25 @@ const Home = () => {
     }
   };
 
+  const handleConfirmDeleteProfile = async (e) => {
+    e.preventDefault();
+    deleteDataAlert(handleDeleteProfile);
+  }
+
+  const handleDeleteProfile = async () => {
+    try {
+      const result = await deleteProfile();
+
+      if (result.success) {
+        showSuccessAlert("Perfil eliminado", "El perfil se eliminó exitosamente.");
+        navigate("/logout");
+      }
+    } catch (error) {
+      showErrorAlert("Error", "Ocurrió un error al eliminar perfil.");
+      console.error("Error al eliminar perfil:", error);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-2xl transform transition-all hover:scale-105 flex gap-4 flex-col">
@@ -129,7 +148,7 @@ const Home = () => {
             Editar perfil
           </button>
           <button
-            onClick={""}
+            onClick={handleConfirmDeleteProfile}
             className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300"
           >
             Eliminar perfil
