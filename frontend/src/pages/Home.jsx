@@ -82,7 +82,7 @@ const Home = () => {
                   className="spinner"
                   style={{ width: "20px", height: "20px", marginRight: "10px" }}
                 ></div>
-                Cargando pilotos...
+                Cargando perfil...
               </span>
             ) : (
               "Obtener Perfil"
