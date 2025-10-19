@@ -194,7 +194,7 @@ const Home = () => {
             <p className="text-lg font-semibold text-gray-700">
               Ingresa los nuevos datos.
             </p>
-            <form className="flex flex-col gap-4" name="edit">
+            <form className="flex flex-col gap-4" name="edit" onSubmit={handleConfirmEditProfile}>
               <div className="w-full flex flex-row gap-4 flex-wrap">
                 <div className="flex flex-col flex-1 gap-1">
                   <label
@@ -230,18 +230,13 @@ const Home = () => {
               </div>
 
               <div className="flex flex-row gap-4 self-end flex-wrap">
-                <input
-                  type="submit"
-                  value="Guardar cambios"
-                  onClick={handleConfirmEditProfile}
+                <button
                   className="px-4 py-2 text-sm bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition-all duration-300 transform hover:shadow-md hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
-                />
-                <input
-                  type="button"
-                  value="Cancelar"
+                >Guardar Cambios</button>
+                <button
                   onClick={handleCancelEditProfile}
                   className="px-4 py-2 text-sm border bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-lg transition-all duration-300 transform hover:shadow-md hover:scale-105"
-                />
+                >Cancelar</button>
               </div>
             </form>
           </div>
