@@ -76,14 +76,12 @@ const Home = () => {
     e.preventDefault();
 
     if (!emailRegex.test(formData.email)) {
-      showErrorAlert("Email inválido", 'El email debe cumplir con el formato "usuario@correo.com"');
-      console.log(formData);
-      
+      showErrorAlert("Email inválido", 'El email debe cumplir con el formato "usuario@correo.com", puedes incluir números, letras y puntos.');
       return;
     }
 
     if (!passwordRegex.test(formData.password)) {
-      showErrorAlert("Contraseña inválida", "La contraseña debe contener al menos: Una mayúscula, una minúscula, un número y un carácter especial (. ! @ # $ % & * _ -)");
+      showErrorAlert("Contraseña inválida", "La contraseña debe contener al menos: Una mayúscula, una minúscula, un número y un carácter especial (. ! @ # $ % & * _ -).");
       return;
     }
 
