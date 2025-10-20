@@ -31,7 +31,11 @@ export async function updateUserById(req, res) {
       handleSuccess(res, 200, "Usuario actualizado exitosamente", updatedUser);
     }
   } catch (error) {
-    handleErrorClient(res, 404, error.message);
+    if (error.code === '23505') { // Código de error de PostgreSQL para violación de unique constraint
+      handleErrorClient(res, 409, "El email ya está registrado");
+    } else {
+      handleErrorServer(res, 500, "Error interno del servidor", error.message);
+    }
   }
 }
 
