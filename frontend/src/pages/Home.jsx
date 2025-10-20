@@ -225,7 +225,7 @@ const Home = () => {
                     type="text"
                     id="password"
                     minLength={8}
-                    maxLength={8}
+                    maxLength={64}
                     onChange={handleInputChange}
                     defaultValue={formData.password}
                     className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
