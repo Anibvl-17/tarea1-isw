@@ -209,6 +209,8 @@ const Home = () => {
                     placeholder="ejemplo@gmail.com"
                     onChange={handleInputChange}
                     defaultValue={formData.email}
+                    minLength={5}
+                    maxLength={254}
                     className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
                   />
                 </div>
@@ -222,6 +224,8 @@ const Home = () => {
                   <input
                     type="text"
                     id="password"
+                    minLength={8}
+                    maxLength={8}
                     onChange={handleInputChange}
                     defaultValue={formData.password}
                     className="border border-gray-200 rounded-lg p-2 text-sm outline-none transition-all hover:border-purple-300 focus:border-purple-400 focus:shadow-md"
