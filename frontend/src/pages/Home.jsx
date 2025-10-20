@@ -97,13 +97,19 @@ const Home = () => {
           "Perfil actualizado",
           "¡Tu perfil se actualizó exitosamente!"
         );
-        navigate("/logout")
+        navigate("/logout");
+      } else {
+        showErrorAlert("Error", result.message || "Ocurrió un error al actualizar tu perfil.");
       }
     } catch (error) {
-      showErrorAlert("Error", "Ocurrió un error al actualizar perfil");
+      showErrorAlert("Error", error.message || "Ocurrió un error al actualizar tu perfil.");
       console.error("Error al actualizar perfil:", error);
     } finally {
       setEditProfile(false);
+      setFormData({
+        email: "",
+        password: ""
+      });
     }
   };
 
