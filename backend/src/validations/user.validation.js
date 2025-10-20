@@ -18,7 +18,7 @@ export const userAuthBodyValidation = Joi.object({
     .min(8)
     .max(64)
     .pattern(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.;~\-_\\/])[A-Za-z\d@$!%*?&.\-_\\/]/
+      /^(?=.*\d)(?=.*[.!@#$%&*_-])(?=.*[a-zñáéíóú])(?=.*[A-ZÑÁÉÍÓÚ]).{8,}$/
     )
     .messages({
       "any.required": "La contraseña es requerida.",
@@ -49,7 +49,7 @@ export const userUpdateBodyValidation = Joi.object({
     .min(8)
     .max(64)
     .pattern(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.;~\-_\\/])[A-Za-z\d@$!%*?&.\-_\\/]/
+      /^(?=.*\d)(?=.*[.!@#$%&*_-])(?=.*[a-zñáéíóú])(?=.*[A-ZÑÁÉÍÓÚ]).{8,}$/
     )
     .messages({
       "string.pattern.base":
