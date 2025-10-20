@@ -70,8 +70,23 @@ const Home = () => {
     setEditProfile(false);
   };
 
+  const emailRegex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{1,4}$/);
+  const passwordRegex = new RegExp(/^(?=.*\d)(?=.*[.!@#$%&*_-])(?=.*[a-zñáéíóú])(?=.*[A-ZÑÁÉÍÓÚ]).{8,}$/);
   const handleConfirmEditProfile = async (e) => {
     e.preventDefault();
+
+    if (!emailRegex.test(formData.email)) {
+      showErrorAlert("Email inválido", 'El email debe cumplir con el formato "usuario@correo.com"');
+      console.log(formData);
+      
+      return;
+    }
+
+    if (!passwordRegex.test(formData.password)) {
+      showErrorAlert("Contraseña inválida", "La contraseña debe contener al menos: Una mayúscula, una minúscula, un número y un carácter especial (. ! @ # $ % & * _ -)");
+      return;
+    }
+
     showConfirmAlert("¿Estás seguro?", "Al editar el perfil, debes iniciar sesión nuevamente.", "Editar perfil y cerrar sesión", handleUpdateProfile);
   }
 
