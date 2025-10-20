@@ -206,6 +206,7 @@ const Home = () => {
                   <input
                     type="text"
                     id="email"
+                    name="email"
                     placeholder="ejemplo@gmail.com"
                     onChange={handleInputChange}
                     defaultValue={formData.email}
@@ -224,6 +225,7 @@ const Home = () => {
                   <input
                     type="text"
                     id="password"
+                    name="password"
                     minLength={8}
                     maxLength={64}
                     onChange={handleInputChange}
