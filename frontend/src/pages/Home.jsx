@@ -132,12 +132,30 @@ const Home = () => {
     }
   }
 
+  const handleLogout = () => {
+    setProfileData(null)
+    setEditProfile(false);
+    setLoading(false);
+    setFormData({
+      email: "",
+      password: ""
+    })
+
+    navigate("/logout");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-2xl transform transition-all hover:scale-105 flex gap-4 flex-col">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 pb-4">
-          Página de Inicio
-        </h1>
+        <div className="flex flex-row flex-wrap items-center">
+          <h1 className="p-2 text-4xl md:teaxt-5xl font-bold text-gray-800 align-middle text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+            Página de Inicio
+          </h1>
+          <button onClick={handleLogout}
+          className="ml-auto mt-2 px-4 py-2 bg-transparent hover:bg-purple-700 hover:text-white text-purple-700 border border-purple-500 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg">
+            Cerrar sesión
+          </button>
+        </div>
 
         <div className="flex flex-row gap-4 flex-wrap">
           <button
