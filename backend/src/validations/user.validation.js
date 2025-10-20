@@ -5,7 +5,7 @@ export const userAuthBodyValidation = Joi.object({
     .required()
     .min(5)
     .max(254)
-    .pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{1,4}$/)
+    .pattern(/^[\w\.]+@([\w]+\.*)+[\w]{1,4}$/)
     .messages({
       "any.required": "El email es requerido.",
       "string.pattern.base": "Formato de email incorrecto.",
@@ -38,7 +38,7 @@ export const userUpdateBodyValidation = Joi.object({
   email: Joi.string()
     .min(5)
     .max(254)
-    .pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{1,4}$/)
+    .pattern(/^[\w\.]+@([\w]+\.*)+[\w]{1,4}$/)
     .messages({
       "string.pattern.base": "Formato de email incorrecto.",
       "string.empty": "El email no puede estar vacio.",
