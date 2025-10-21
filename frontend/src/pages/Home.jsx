@@ -38,6 +38,10 @@ const Home = () => {
     } finally {
       setLoading(false);
       setEditProfile(false);
+      setFormData({
+        email: "",
+        password: ""
+      })
     }
   };
 
