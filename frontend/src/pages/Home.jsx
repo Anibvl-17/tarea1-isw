@@ -74,7 +74,7 @@ const Home = () => {
     setEditProfile(false);
   };
 
-  const emailRegex = new RegExp(/^[\w\.]+@([\w]+\.*)+[\w]{1,4}$/);
+  const emailRegex = new RegExp(/^(\w+\.*)*\w+@(\w+\.{1}\w)*\w*\.\w{1,4}$/);
   const passwordRegex = new RegExp(/^(?=.*\d)(?=.*[.!@#$%&*_-])(?=.*[a-zñáéíóú])(?=.*[A-ZÑÁÉÍÓÚ]).{8,}$/);
   const handleConfirmEditProfile = async (e) => {
     e.preventDefault();
